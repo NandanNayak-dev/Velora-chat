@@ -1,0 +1,160 @@
+<%- include("../partials/header") %>
+
+<div class="chat-layout">
+  <aside class="chat-sidebar">
+    <div class="sidebar-header">
+      <div>
+        <span class="eyebrow">My chats</span>
+        <h2>Your Groups</h2>
+      </div>
+      <a href="/groups/new" class="button button--primary">New Group</a>
+    </div>
+
+    <div class="group-list">
+      <% groups.forEach((g) => { %>
+        <a href="/groups/<%= g._id %>" class="group-row <%= g._id.equals(group._id) ? 'group-row--active' : '' %>">
+          <div class="group-row__avatar"><%= (g.name || "?").charAt(0).toUpperCase() %></div>
+          <div class="group-row__meta">
+            <strong><%= g.name %></strong>
+            <span>Admin: <%= g.admin.username || g.admin._id %></span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </aside>
+
+  <section class="chat-stage chat-stage--conversation">
+    <header class="conversation-header">
+      <div>
+        <span class="eyebrow">Private room</span>
+        <h2><%= group.name %></h2>
+        <p>Admin: <%= group.admin.username %> - <%= group.members.length %> members</p>
+        <% if (currentUser && !group.admin._id.equals(currentUser._id)) { %>
+          <form action="/groups/<%= group._id %>/leave" method="POST">
+            <button class="button button--danger button--small">Leave Group</button>
+          </form>
+        <% } %>
+      </div>
+
+      <% if (currentUser && (group.admin._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+        <div class="token-card">
+          <span class="token-card__label">Invite token</span>
+          <code><%= group.token %></code>
+          <p>Keep this private. Only share it with people who should join.</p>
+          <form action="/groups/<%= group._id %>/generate-token" method="POST">
+            <button class="button button--ghost">Regenerate Token</button>
+          </form>
+        </div>
+      <% } %>
+    </header>
+
+    <div class="conversation-body">
+      <div class="message-feed">
+        <% if (messages.length) { %>
+          <% messages.forEach((m) => { %>
+            <article class="message-bubble <%= m.author._id.equals(currentUser._id) ? 'message-bubble--outgoing' : 'message-bubble--incoming' %>">
+              <div class="message-bubble__author"><%= m.author.username %></div>
+              <p><%= m.content %></p>
+              <div class="message-meta">
+                <span><%= m.createdAt.toLocaleString() %></span>
+                <% if (currentUser && (m.author._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+                  <div class="message-iconbar">
+                    <button
+                      type="button"
+                      class="icon-button"
+                      data-edit-toggle="<%= m._id %>"
+                      aria-label="Edit message"
+                      title="Edit message"
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 15.5V20h4.5L19 9.5 14.5 5 4 15.5zm12.8-11.3 2.5 2.5c.4.4.4 1 0 1.4l-1.6 1.6-3.9-3.9 1.6-1.6c.4-.4 1-.4 1.4 0z"/>
+                      </svg>
+                    </button>
+                    <form action="/groups/<%= group._id %>/messages/<%= m._id %>/delete" method="POST">
+                      <button
+                        class="icon-button icon-button--danger"
+                        type="submit"
+                        aria-label="Delete message"
+                        title="Delete message"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 7h2v8h-2v-8zm4 0h2v8h-2v-8zM7 10h2v8H7v-8z"/>
+                        </svg>
+                      </button>
+                    </form>
+                  </div>
+                <% } %>
+              </div>
+              <% if (currentUser && (m.author._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+                <form
+                  action="/groups/<%= group._id %>/messages/<%= m._id %>/edit"
+                  method="POST"
+                  class="message-edit-form"
+                  data-edit-form="<%= m._id %>"
+                  hidden
+                >
+                    <input
+                      name="content"
+                      class="input input--small"
+                      value="<%= m.content %>"
+                      required
+                    />
+                    <button class="button button--dark button--small" type="submit">Save</button>
+                    <button
+                      type="button"
+                      class="button button--ghost button--small button--cancel"
+                      data-edit-cancel="<%= m._id %>"
+                    >
+                      Cancel
+                    </button>
+                </form>
+              <% } %>
+            </article>
+          <% }) %>
+        <% } else { %>
+          <div class="empty-card">
+            <h3>No messages yet</h3>
+            <p>Say hello to start the conversation.</p>
+          </div>
+        <% } %>
+      </div>
+
+      <aside class="conversation-sidepanel">
+        <div class="member-card">
+          <h3>Members</h3>
+          <div class="member-list">
+            <% group.members.forEach((m) => { %>
+              <div class="member-row">
+                <div>
+                  <strong><%= m.username || m._id %></strong>
+                  <% if (m._id.equals(group.admin._id)) { %>
+                    <span class="member-badge">Admin</span>
+                  <% } %>
+                </div>
+                <% if (currentUser && (group.admin._id.equals(currentUser._id) || currentUser.isAdmin) && !m._id.equals(group.admin._id)) { %>
+                  <form action="/groups/<%= group._id %>/remove-member" method="POST">
+                    <input type="hidden" name="memberId" value="<%= m._id %>" />
+                    <button class="button button--danger button--small">Remove</button>
+                  </form>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <form action="/groups/<%= group._id %>/messages" method="POST" class="message-composer">
+      <input
+        name="content"
+        class="input"
+        placeholder="Type a message"
+        autocomplete="off"
+        required
+      />
+      <button class="button button--primary">Send</button>
+    </form>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

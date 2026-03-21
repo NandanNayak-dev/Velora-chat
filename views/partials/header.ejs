@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Velora</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="<%= currentUser ? 'app-shell' : 'landing-shell' %>">
+    <div class="page-backdrop"></div>
+    <nav class="topbar">
+      <div class="topbar__brand">
+        <a class="topbar__logo" href="/">Velora</a>
+        <span class="topbar__tag">Private groups only</span>
+      </div>
+      <div class="topbar__nav">
+        <% if (!currentUser) { %>
+          <a class="topbar__link" href="/signup">Sign Up</a>
+          <a class="button button--ghost" href="/login">Log In</a>
+        <% } else { %>
+          <a class="topbar__link" href="/groups">My Chats</a>
+          <a class="button button--ghost" href="/logout">Logout</a>
+          <details class="profile-menu">
+            <summary class="profile-menu__toggle" aria-label="Open profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 4.5V20h14v-1.5C19 16 16 14 12 14z"/>
+              </svg>
+            </summary>
+            <div class="profile-menu__panel">
+              <span class="profile-menu__label">Profile</span>
+              <strong><%= currentUser.username %></strong>
+              <span><%= currentUser.email %></span>
+            </div>
+          </details>
+        <% } %>
+      </div>
+    </nav>
+
+    <main class="page-wrap">
+      <% if (success && success.length) { %>
+        <div class="flash flash--success"><%= success %></div>
+      <% } %>
+      <% if (error && error.length) { %>
+        <div class="flash flash--error"><%= error %></div>
+      <% } %>
+      <div class="page-card">
+        
+      

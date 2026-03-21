@@ -1,0 +1,32 @@
+<%- include("../partials/header") %>
+
+<div class="auth-layout">
+  <section class="auth-panel auth-panel--accent">
+    <span class="eyebrow">Welcome</span>
+    <h2>Create your account</h2>
+    <p>
+      Start a private chat group, keep the token with you, and invite only the
+      people who are meant to join.
+    </p>
+  </section>
+
+  <section class="auth-panel">
+    <form action="/signup" method="POST" class="stack-form">
+      <label class="field">
+        <span>Username</span>
+        <input name="username" class="input" required />
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input name="email" type="email" class="input" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input name="password" type="password" class="input" required />
+      </label>
+      <button class="button button--primary button--full">Sign Up</button>
+    </form>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

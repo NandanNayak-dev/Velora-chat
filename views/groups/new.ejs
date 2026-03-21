@@ -1,0 +1,20 @@
+<%- include("../partials/header") %>
+
+<div class="composer-card">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">New group</span>
+      <h2>Create a private room</h2>
+    </div>
+  </div>
+
+  <form action="/groups" method="POST" class="stack-form">
+    <label class="field">
+      <span>Group name</span>
+      <input name="name" class="input" placeholder="Family, Project Team, Study Circle" required />
+    </label>
+    <button class="button button--primary">Create Group</button>
+  </form>
+</div>
+
+<%- include("../partials/footer") %>

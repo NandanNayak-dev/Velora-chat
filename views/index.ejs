@@ -1,0 +1,36 @@
+<%- include("partials/header") %>
+
+<div class="hero">
+  <div class="hero__content">
+    <span class="eyebrow">Secure group chat</span>
+    <h1 class="hero__title">Private rooms, protected invite codes, cleaner conversations.</h1>
+    <p class="hero__text">
+      Only people who already know a group token can join. Tokens stay visible to admins,
+      and non-members cannot open group chats to peek inside.
+    </p>
+    <div class="hero__actions">
+      <% if (!currentUser) { %>
+        <a href="/signup" class="button button--primary">Create Account</a>
+        <a href="/login" class="button button--ghost">Log In</a>
+      <% } else { %>
+        <a href="/groups" class="button button--primary">Open My Chats</a>
+      <% } %>
+    </div>
+  </div>
+  <div class="hero__preview">
+    <div class="preview-card">
+      <div class="preview-card__sidebar">
+        <div class="preview-badge preview-badge--active">Family</div>
+        <div class="preview-badge">Study Circle</div>
+        <div class="preview-badge">Weekend Trip</div>
+      </div>
+      <div class="preview-card__chat">
+        <div class="preview-bubble preview-bubble--incoming">Token stays with the admin.</div>
+        <div class="preview-bubble preview-bubble--outgoing">Only invited people get in.</div>
+        <div class="preview-bubble preview-bubble--incoming">That is how group privacy should feel.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

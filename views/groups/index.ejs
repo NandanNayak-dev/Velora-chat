@@ -1,0 +1,66 @@
+<%- include("../partials/header") %>
+
+<div class="chat-layout">
+  <aside class="chat-sidebar">
+    <div class="sidebar-header">
+      <div>
+        <span class="eyebrow">My chats</span>
+        <h2>Your Groups</h2>
+      </div>
+      <a href="/groups/new" class="button button--primary">New Group</a>
+    </div>
+
+    <div class="group-list">
+      <% if (groups.length) { %>
+        <% groups.forEach((g) => { %>
+          <a href="/groups/<%= g._id %>" class="group-row">
+            <div class="group-row__avatar"><%= (g.name || "?").charAt(0).toUpperCase() %></div>
+            <div class="group-row__meta">
+              <strong><%= g.name %></strong>
+              <span>Admin: <%= g.admin.username || g.admin._id %></span>
+            </div>
+          </a>
+        <% }) %>
+      <% } else { %>
+        <div class="empty-card">
+          <h3>No groups yet</h3>
+          <p>Create one or join using a token someone shared with you privately.</p>
+        </div>
+      <% } %>
+    </div>
+  </aside>
+
+  <section class="chat-stage">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Join securely</span>
+        <h2>Join with a remembered token</h2>
+      </div>
+    </div>
+
+    <div class="composer-card">
+      <form action="/groups/join" method="POST" class="inline-form">
+        <input
+          name="token"
+          class="input"
+          placeholder="Paste the private group token"
+          autocomplete="off"
+          required
+        />
+        <button class="button button--primary">Join Group</button>
+      </form>
+      <p class="helper-text">
+        Group tokens are not shown to non-members. You can only join if someone
+        shares the token with you outside the group.
+      </p>
+    </div>
+
+    <div class="empty-chat">
+      <div class="empty-chat__icon">#</div>
+      <h3>Select a group from the left</h3>
+      <p>Open any chat you already belong to. Private groups stay private.</p>
+    </div>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

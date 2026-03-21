@@ -1,0 +1,28 @@
+<%- include("../partials/header") %>
+
+<div class="auth-layout">
+  <section class="auth-panel auth-panel--accent">
+    <span class="eyebrow">Welcome back</span>
+    <h2>Log in to your chats</h2>
+    <p>
+      Open the groups you already belong to, share tokens privately, and keep
+      group access under control.
+    </p>
+  </section>
+
+  <section class="auth-panel">
+    <form action="/login" method="POST" class="stack-form">
+      <label class="field">
+        <span>Username or Email</span>
+        <input name="username" class="input" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input name="password" type="password" class="input" required />
+      </label>
+      <button class="button button--primary button--full">Log In</button>
+    </form>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>
