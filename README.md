@@ -116,3 +116,8 @@ http://localhost:8080
 ## Status
 
 This project is a minimal private group chat application intended for learning, iteration, and feature extension.
+
+
+
+
+--10/3/2026
