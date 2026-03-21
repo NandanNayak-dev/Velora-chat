@@ -2,6 +2,12 @@
 
 Velora Chat is a private group chat application built with Node.js, Express, MongoDB, EJS, and Passport. It is designed around invitation-only group access: users can create groups, share a private token with selected people, and chat only inside groups they belong to.
 
+## Live Demo
+
+Deployed website:
+
+https://velora-chat-1.onrender.com
+
 ## What The Project Does
 
 The app provides a lightweight group messaging workflow with server-rendered pages and session-based authentication.
@@ -116,8 +122,3 @@ http://localhost:8080
 ## Status
 
 This project is a minimal private group chat application intended for learning, iteration, and feature extension.
-
-
-
-
---10/3/2026
