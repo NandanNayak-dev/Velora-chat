@@ -5,6 +5,31 @@ document.addEventListener("click", (event) => {
     });
   };
 
+  const membersPanel = document.querySelector("[data-members-panel]");
+  const membersOverlay = document.querySelector(".members-overlay");
+  const openMembersPanel = () => {
+    if (!membersPanel || !membersOverlay) return;
+    membersPanel.classList.add("is-open");
+    membersOverlay.hidden = false;
+    membersOverlay.classList.add("is-open");
+  };
+  const closeMembersPanel = () => {
+    if (!membersPanel || !membersOverlay) return;
+    membersPanel.classList.remove("is-open");
+    membersOverlay.classList.remove("is-open");
+    membersOverlay.hidden = true;
+  };
+
+  if (event.target.closest("[data-members-open]")) {
+    openMembersPanel();
+    return;
+  }
+
+  if (event.target.closest("[data-members-close]")) {
+    closeMembersPanel();
+    return;
+  }
+
   const editToggle = event.target.closest("[data-edit-toggle]");
   if (editToggle) {
     const id = editToggle.getAttribute("data-edit-toggle");
@@ -32,5 +57,17 @@ document.addEventListener("click", (event) => {
     if (form) {
       form.hidden = true;
     }
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+
+  const membersPanel = document.querySelector("[data-members-panel]");
+  const membersOverlay = document.querySelector(".members-overlay");
+  if (membersPanel && membersOverlay && membersPanel.classList.contains("is-open")) {
+    membersPanel.classList.remove("is-open");
+    membersOverlay.classList.remove("is-open");
+    membersOverlay.hidden = true;
   }
 });

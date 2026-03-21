@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 
-<div class="chat-layout">
+<div class="chat-layout chat-layout--conversation-view">
   <aside class="chat-sidebar">
     <div class="sidebar-header">
       <div>
@@ -10,7 +10,7 @@
       <a href="/groups/new" class="button button--primary">New Group</a>
     </div>
 
-    <div class="group-list">
+    <div class="group-list group-list--sidebar">
       <% groups.forEach((g) => { %>
         <a href="/groups/<%= g._id %>" class="group-row <%= g._id.equals(group._id) ? 'group-row--active' : '' %>">
           <div class="group-row__avatar"><%= (g.name || "?").charAt(0).toUpperCase() %></div>
@@ -25,15 +25,24 @@
 
   <section class="chat-stage chat-stage--conversation">
     <header class="conversation-header">
-      <div>
+      <div class="conversation-header__main">
         <span class="eyebrow">Private room</span>
         <h2><%= group.name %></h2>
         <p>Admin: <%= group.admin.username %> - <%= group.members.length %> members</p>
-        <% if (currentUser && !group.admin._id.equals(currentUser._id)) { %>
-          <form action="/groups/<%= group._id %>/leave" method="POST">
-            <button class="button button--danger button--small">Leave Group</button>
-          </form>
-        <% } %>
+        <div class="conversation-header__controls">
+          <button
+            type="button"
+            class="button button--dark button--small conversation-members-toggle"
+            data-members-open
+          >
+            View Members
+          </button>
+          <% if (currentUser && !group.admin._id.equals(currentUser._id)) { %>
+            <form action="/groups/<%= group._id %>/leave" method="POST" class="conversation-header__action">
+              <button class="button button--danger button--small">Leave Group</button>
+            </form>
+          <% } %>
+        </div>
       </div>
 
       <% if (currentUser && (group.admin._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
@@ -119,9 +128,21 @@
         <% } %>
       </div>
 
-      <aside class="conversation-sidepanel">
+      <aside class="conversation-sidepanel" data-members-panel>
         <div class="member-card">
-          <h3>Members</h3>
+          <div class="member-card__header">
+            <h3>Members</h3>
+            <button
+              type="button"
+              class="icon-button member-card__close"
+              aria-label="Close members panel"
+              data-members-close
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.41L10.59 13.4 4.29 19.7 2.88 18.29 9.17 12 2.88 5.71 4.29 4.3l6.3 6.29 6.29-6.3z"/>
+              </svg>
+            </button>
+          </div>
           <div class="member-list">
             <% group.members.forEach((m) => { %>
               <div class="member-row">
@@ -143,6 +164,14 @@
         </div>
       </aside>
     </div>
+
+    <button
+      type="button"
+      class="members-overlay"
+      aria-label="Close members panel"
+      data-members-close
+      hidden
+    ></button>
 
     <form action="/groups/<%= group._id %>/messages" method="POST" class="message-composer">
       <input

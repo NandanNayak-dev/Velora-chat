@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 
-<div class="chat-layout">
+<div class="chat-layout chat-layout--directory">
   <aside class="chat-sidebar">
     <div class="sidebar-header">
       <div>
@@ -10,7 +10,7 @@
       <a href="/groups/new" class="button button--primary">New Group</a>
     </div>
 
-    <div class="group-list">
+    <div class="group-list group-list--sidebar">
       <% if (groups.length) { %>
         <% groups.forEach((g) => { %>
           <a href="/groups/<%= g._id %>" class="group-row">
@@ -30,7 +30,7 @@
     </div>
   </aside>
 
-  <section class="chat-stage">
+  <section class="chat-stage chat-stage--directory">
     <div class="section-heading">
       <div>
         <span class="eyebrow">Join securely</span>
