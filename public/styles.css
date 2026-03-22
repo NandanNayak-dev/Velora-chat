@@ -35,6 +35,10 @@ body {
   overflow-x: hidden;
 }
 
+body.is-lock-scroll {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -73,6 +77,7 @@ a {
 
 .topbar__nav {
   justify-content: flex-end;
+  min-width: 0;
 }
 
 .topbar__logo {
@@ -99,6 +104,8 @@ a {
   background: rgba(13, 23, 28, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  flex: 0 1 auto;
+  white-space: nowrap;
 }
 
 .topbar__link:hover {
@@ -110,6 +117,8 @@ a {
   min-height: 36px;
   padding: 6px 12px;
   font-size: 0.92rem;
+  flex: 0 1 auto;
+  white-space: nowrap;
 }
 
 .topbar__link:focus-visible,
@@ -940,8 +949,8 @@ a {
 
   .topbar__nav {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: end;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     align-items: center;
     gap: 8px;
     overflow: visible;
@@ -1060,6 +1069,14 @@ a {
 
   .chat-stage--conversation {
     padding-bottom: 12px;
+  }
+
+  .chat-layout--conversation-view {
+    display: block;
+  }
+
+  .chat-layout--conversation-view > .chat-sidebar {
+    display: none;
   }
 
   .conversation-header h2,
@@ -1182,8 +1199,11 @@ a {
   }
 
   .topbar__nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+    justify-content: stretch;
     gap: 8px;
-    flex-wrap: nowrap;
   }
 
   .topbar__link,
@@ -1224,22 +1244,22 @@ a {
 
   .topbar__link {
     min-height: 34px;
-    min-width: 84px;
+    min-width: 0;
     padding: 6px 10px;
     font-size: 0.88rem;
     font-weight: 700;
     background: rgba(11, 20, 26, 0.9);
     white-space: nowrap;
-    flex: 0 0 auto;
+    width: 100%;
   }
 
   .topbar__nav .button {
     min-height: 34px;
-    min-width: 84px;
+    min-width: 0;
     padding: 6px 10px;
     font-size: 0.88rem;
     white-space: nowrap;
-    flex: 0 0 auto;
+    width: 100%;
   }
 
   .button--ghost {
@@ -1260,6 +1280,7 @@ a {
 
   .profile-menu {
     width: auto;
+    justify-self: end;
   }
 
   .profile-menu__toggle {
