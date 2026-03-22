@@ -852,6 +852,8 @@ a {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-width: 0;
 }
 
 .message-composer .input,
@@ -1139,8 +1141,9 @@ a {
   .message-composer {
     padding: 14px;
     border-radius: 20px;
-    flex-direction: row;
-    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
   }
 
   .token-card,
@@ -1313,6 +1316,15 @@ a {
     width: auto;
   }
 
+  .message-composer .input {
+    min-width: 0;
+  }
+
+  .message-composer .button {
+    min-width: 78px;
+    height: 100%;
+  }
+
   .icon-button {
     width: 38px;
     height: 38px;
@@ -1320,5 +1332,16 @@ a {
 
   .input {
     padding: 13px 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .message-composer {
+    grid-template-columns: 1fr;
+  }
+
+  .message-composer .button {
+    width: 100%;
+    min-width: 0;
   }
 }
